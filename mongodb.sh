@@ -22,7 +22,7 @@ VALIDATE(){
 
 if [ $ID -ne 0 ]
 then
-    echo "ERROR:: "$R Please run this script with root access $N"
+    echo -e "$R ERROR:: Please run this script with root access $N"
     exit 1
 else
     echo "You are root user"
@@ -30,5 +30,5 @@ fi
 
 cp mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOGFILE
 
-VALIDATE $? "Copied MongoDB repo"
+VALIDATE $? "Copied MongoDB Repo"
 
