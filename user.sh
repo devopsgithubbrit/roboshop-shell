@@ -86,6 +86,6 @@ dnf install mongodb-org-shell -y  & >> LOGFILE
 
 VALIDATE $? "Installed mongodb client"
 
-mongo --host mongodb.chintu.cloud </app/schema/user.js  & >> LOGFILE
+mongo --host mongodb.chintu.cloud </app/schema/user.js  & >> $LOGFILE
 
 VALIDATE $? "Loading user data into MOngoDb"
