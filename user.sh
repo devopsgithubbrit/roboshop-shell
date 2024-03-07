@@ -56,7 +56,7 @@ cd /app
 
 unzip /tmp/user.zip  $LOGFILE
 
-VALIDATE "unzipping user" &>> 
+VALIDATE "unzipping user" &>> $LOGFILE
 
 npm install &>> $LOGFILE
 
