@@ -16,40 +16,41 @@ VALIDATE(){
     if [ $1 -ne 0 ]
     then
         echo -e "$2 ... $R FAILED $N"
+        exit 1
     else
         echo -e "$2 ... $G SUCCESS $N"
     fi
 }
 
-if [ $ID -ne 0 ]   #if roboshop user does not exist, then it is failure
+if [ $ID -ne 0 ]
 then
     echo -e "$R ERROR:: Please run this script with root access $N"
-    exit 1
+    exit 1 # you can give other than 0
 else
     echo "You are root user"
-fi
-
-dnf install https://rpms.remirepo.net/enterprise/remi-release-8.rpm -y 
-
-VALIDATE $? "Installing redis'
-
-dnf module enable redis:remi-6.2 -y 
+fi # fi means reverse of if, indicating condition end
 
 
-VALIDATE $? "Enable redis"
+dnf install https://rpms.remirepo.net/enterprise/remi-release-8.rpm -y
+
+VALIDATE $? "Installing Remi release"
+
+dnf module enable redis:remi-6.2 -y
+
+VALIDATE $? "enabling redis"
 
 dnf install redis -y
 
-VALIDATE $? "Install redis"   
+VALIDATE $? "Installing Redis"
 
-sed -i 's/127.0.0.1/0.0.0.0/g'  /etc/redis/redis.conf
+sed -i 's/127.0.0.1/0.0.0.0/g' /etc/redis/redis.conf
 
-VALIDAtE $? "Allowing remote connections"  
+VALIDATE $? "allowing remote connections"
 
 systemctl enable redis
 
-VALIDATE $? "Enable redis"
+VALIDATE $? "Enabled Redis"
 
 systemctl start redis
 
-VALIDATE $? "Start Redis"
+VALIDATE $? "Started Redis"
