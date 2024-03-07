@@ -5,6 +5,7 @@ R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
+MONGDB_HOST=mongodb.daws76s.online
 
 TIMESTAMP=$(date +%F-%H-%M-%S)
 LOGFILE="/tmp/$0-$TIMESTAMP.log"
@@ -15,41 +16,40 @@ VALIDATE(){
     if [ $1 -ne 0 ]
     then
         echo -e "$2 ... $R FAILED $N"
+        exit 1
     else
         echo -e "$2 ... $G SUCCESS $N"
     fi
 }
 
-if [ $ID -ne 0 ]   #if roboshop user does not exist, then it is failure
+if [ $ID -ne 0 ]
 then
     echo -e "$R ERROR:: Please run this script with root access $N"
-    exit 1
+    exit 1 # you can give other than 0
 else
     echo "You are root user"
-fi
+fi # fi means reverse of if, indicating condition end
 
-dnf module disable mysql -y
+dnf module disable mysql -y &>> $LOGFILE
 
-VALIDATE $? "Disable current Mysql version"
+VALIDATE $? "Disable current MySQL version"
 
-cp mysql.repo /etc/yum.repos.d/mysql.repo
+cp mysql.repo /etc/yum.repos.d/mysql.repo &>> $LOGFILE
 
-VALIDATE $? "Copied Mysql repo"
+VALIDATE $? "Copied MySQl repo"
 
-dnf install mysql-community-server -y
+dnf install mysql-community-server -y &>> $LOGFILE
 
-VALIDATE $? "installing mysql server"
+VALIDATE $? "Installing MySQL Server"
 
-systemctl enable mysqld
+systemctl enable mysqld &>> $LOGFILE 
 
-VALIDATE $? "Enable mysql"
+VALIDATE $? "Enabling MySQL Server"
 
-systemctl start mysqld
+systemctl start mysqld &>> $LOGFILE
 
-VALIDATE $? "start mysql"
+VALIDATE $? "Starting  MySQL Server" 
 
-mysql_secure_installation --set-root-pass RoboShop@1
+mysql_secure_installation --set-root-pass RoboShop@1 &>> $LOGFILE
 
-VALIDATE "Setting mysql root password"
-
-
+VALIDATE $? "Setting  MySQL root password"
