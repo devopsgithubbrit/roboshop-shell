@@ -27,3 +27,5 @@ then
 else
     echo "You are root user"
 fi
+
+dnf install maven -y
