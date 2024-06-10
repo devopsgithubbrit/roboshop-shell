@@ -1,9 +1,9 @@
 #!/bin/bash
 
-AMI=ami-0f3c7d07486cad139
-SG_ID=sg-0541eee51da2719f0 #replace with your SG ID
+AMI=ami-0b4f379183e5706b9
+SG_ID=sg-0541eee51da2719f0
 INSTANCES=("mongodb" "redis" "mysql" "rabbitmq" "catalogue" "user" "cart" "shipping" "payment" "dispatch" "web")
-ZONE_ID=Z09079071I9PB2SGNM2HI # replace your zone ID
+ZONE_ID=Z09079071I9PB2SGNM2HI 
 DOMAIN_NAME="chintu.cloud"
 
 for i in "${INSTANCES[@]}"
@@ -18,7 +18,7 @@ do
     IP_ADDRESS=$(aws ec2 run-instances --image-id ami-0f3c7d07486cad139 --instance-type $INSTANCE_TYPE --security-group-ids sg-0541eee51da2719f0 --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$i}]" --query 'Instances[0].PrivateIpAddress' --output text)
     echo "$i: $IP_ADDRESS"
 
-    #create R53 record, make sure you delete existing record
+    
     aws route53 change-resource-record-sets \
     --hosted-zone-id $ZONE_ID \
     --change-batch '
