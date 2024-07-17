@@ -28,7 +28,7 @@ else
     echo "You are root user"
 fi
 
-cp /etc/yum.repos.d/mongo.repo  &>> $LOGFILE
+cp mongo.repo /etc/yum.repos.d/mongo.repo  &>> $LOGFILE
 
 VALIDATE $? "Repository Setup"
 
@@ -44,7 +44,7 @@ systemctl start mongod  &>> $LOGFILE
 
 VALIDATE $ "Starting MongoDB"
 
-sed -i "/s/127.0.0.1 to 0.0.0.0"  /etc/mongod.conf  &>> $LOGFILE
+sed -i "/s/127.0.0.1/0.0.0.0/g"  /etc/mongod.conf  &>> $LOGFILE
 
 VALIDATE $? "port change"
 
