@@ -5,6 +5,7 @@ R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
+MONGDB_HOST=mongodb.chintu.cloud
 
 TIMESTAMP=$(date +%F-%H-%M-%S)
 LOGFILE="/tmp/$0-$TIMESTAMP.log"
@@ -29,27 +30,26 @@ else
     echo "You are root user"
 fi 
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOGFILE
+cp mongo.repo /etc/yum.repos.d/mongo.repo 
 
-VALIDATE $? "Copied MongoDB Repo"
+VALIDATE $? "Copied mongo"
 
-dnf install mongodb-org -y &>> $LOGFILE
+dnf install mongodb-org -y 
 
-VALIDATE $? "Installing MongoDB"
+VALIDATE $? "Installing mongodb"
 
-systemctl enable mongod &>> $LOGFILE
+systemctl enable mongod
 
-VALIDATE $? "Enabling MongoDB"
+VALIDATE $? "Enabling Mongod"
 
-systemctl start mongod &>> $LOGFILE
+systemctl start mongod
 
-VALIDATE $? "Starting MongoDB"
+VALIDATE $? "Starting Mongod"
 
-sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf &>> $LOGFILE
+sed -i '/s/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
 
-VALIDATE $? "Remote access to MongoDB"
+VALIDATE $? "PORTS"
 
-systemctl restart mongod &>> $LOGFILE
+systemctl restart mongod
 
-VALIDATE $? "Restarting MongoDB"
-
+VALIDATE $? "Restarting mongodb"
