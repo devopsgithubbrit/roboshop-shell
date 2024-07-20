@@ -1,10 +1,10 @@
 #!/bin/bash
 
-AMI=ami-0f3c7d07486cad139 #this keeps on changing
-SG_ID=sg-087e7afb3a936fce7 #replace with your SG ID
+AMI=ami-0b4f379183e5706b9
+SG_ID=sg-06c91e9bdbf6b0a9a
 INSTANCES=("mongodb" "redis" "mysql" "rabbitmq" "catalogue" "user" "cart" "shipping" "payment" "dispatch" "web")
-ZONE_ID=Z104317737D96UJVA7NEF # replace your zone ID
-DOMAIN_NAME="daws76s.online"
+ZONE_ID=Z08765831RB3JWEUBEUPM
+DOMAIN_NAME="chintu.cloud"
 
 for i in "${INSTANCES[@]}"
 do
@@ -15,7 +15,7 @@ do
         INSTANCE_TYPE="t2.micro"
     fi
 
-    IP_ADDRESS=$(aws ec2 run-instances --image-id $AMI --instance-type $INSTANCE_TYPE --security-group-ids sg-087e7afb3a936fce7 --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$i}]" --query 'Instances[0].PrivateIpAddress' --output text)
+    IP_ADDRESS=$(aws ec2 run-instances --image-id $AMI --instance-type $INSTANCE_TYPE --security-group-ids sg-06c91e9bdbf6b0a9a --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$i}]" --query 'Instances[0].PrivateIpAddress' --output text)
     echo "$i: $IP_ADDRESS"
 
     
