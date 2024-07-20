@@ -32,15 +32,15 @@ fi
 
 dnf module disable nodejs -y &>> $LOGFILE
 
-VALIDATE $? "Disabling nodejs:10 version"
+VALIDATE $? "Disabling current NodeJS"
 
 dnf module enable nodejs:18 -y  &>> $LOGFILE
 
-VALIDATE $? "enabling nodejs:18 version"
+VALIDATE $? "Enabling NodeJS:18"
 
-dnf install nodejs -y   &>> $LOGFILE
+dnf install nodejs -y  &>> $LOGFILE
 
-VALIDATE $? "installing nodejs"
+VALIDATE $? "Installing NodeJS:18"
 
 id roboshop 
 if [ $? -ne 0 ]
@@ -51,48 +51,48 @@ else
     echo -e "roboshop user already exist $Y SKIPPING $N"
 fi
 
-mkdir -p /app    &>> $LOGFILE
+mkdir -p /app
 
-VALIDATE $? "Creating directory"
+VALIDATE $? "creating app directory"
 
-curl -L -o /tmp/user.zip https://roboshop-builds.s3.amazonaws.com/user.zip      &>> $LOGFILE
+curl -o /tmp/user.zip https://roboshop-builds.s3.amazonaws.com/user.zip  &>> $LOGFILE
 
-VALIDATE $? "Downloading the user directory"
+VALIDATE $? "Downloading user application"
 
-cd /app     &>> $LOGFILE
+cd /app 
 
-unzip /tmp/user.zip &>> $LOGFILE
+unzip -o /tmp/user.zip  &>> $LOGFILE
 
 VALIDATE $? "unzipping user"
 
-npm install     &>> $LOGFILE
+npm install  &>> $LOGFILE
 
-VALIDATE $? "Installing packages"
+VALIDATE $? "Installing dependencies"
 
-cp /home/centos/roboshop-shell/user.service /etc/systemd/system/user.service &>> $LOGFILE
+cp /home/centos/roboshop-shell/user.service /etc/systemd/system/user.service
 
-VALIDATE $? "setting user-service"
+VALIDATE $? "Copying user service file"
 
 systemctl daemon-reload &>> $LOGFILE
 
-VALIDATE $? "daemon reloading"
+VALIDATE $? "user daemon reload"
 
-systemctl enable user   &>> $LOGFILE
+systemctl enable user &>> $LOGFILE
 
-VALIDATE $? "Enabled user"
+VALIDATE $? "Enable user"
 
-systemctl start user    &>> $LOGFILE
+systemctl start user &>> $LOGFILE
 
 VALIDATE $? "Starting user"
 
-cp /home/centos/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo   &>> $LOGFILE
+cp /home/centos/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo
 
-VALIDATE $? "setting up mongo repo"
+VALIDATE $? "copying mongodb repo"
 
-dnf install mongodb-org-shell -y    &>> $LOGFILE
+dnf install mongodb-org-shell -y &>> $LOGFILE
 
-VALIDATE $? "installing mongodb client"
+VALIDATE $? "Installing MongoDB client"
 
-mongo --host $MONGDB_HOST </app/schema/user.js  &>> $LOGFILE
+mongo --host $MONGDB_HOST </app/schema/user.js &>> $LOGFILE
 
-VALIDATE $? "loading schema"
+VALIDATE $? "Loading user data into MongoDB"

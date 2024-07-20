@@ -25,7 +25,7 @@ VALIDATE(){
 if [ $ID -ne 0 ]
 then
     echo -e "$R ERROR:: Please run this script with root access $N"
-    exit 1
+    exit 1 
 else
     echo "You are root user"
 fi 
@@ -68,6 +68,7 @@ VALIDATE $? "unzipping catalogue"
 npm install  &>> $LOGFILE
 
 VALIDATE $? "Installing dependencies"
+
 
 cp /home/centos/roboshop-shell/catalogue.service /etc/systemd/system/catalogue.service &>> $LOGFILE
 
