@@ -3,7 +3,7 @@
 AMI=ami-0b4f379183e5706b9
 SG_ID=sg-06c91e9bdbf6b0a9a
 INSTANCES=("mongodb" "redis" "mysql" "rabbitmq" "catalogue" "user" "cart" "shipping" "payment" "dispatch" "web")
-ZONE_ID=Z08765831RB3JWEUBEUPM
+ZONE_ID=Z02910552L0QKDAQTQM2P
 DOMAIN_NAME="chintu.cloud"
 
 for i in "${INSTANCES[@]}"
